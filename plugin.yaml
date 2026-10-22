@@ -61,7 +61,7 @@ remote:
 #     user's Bearer token and checks the gpubooking.openshift.io admin verb
 #   - Kueue ClusterQueues/LocalQueues/Cohorts: get, list, patch, delete
 #   - Kueue Workloads + ResourceFlavors: list
-#   - OpenDataHub HardwareProfiles: get, list, patch, delete
+#   - OpenDataHub HardwareProfiles: get, list, create, patch, delete
 #   - core nodes: list (GPU discovery); core namespaces: get
 rbac:
   required_roles:
@@ -69,7 +69,7 @@ rbac:
     - "authorization.k8s.io/subjectaccessreviews: create"
     - "kueue.x-k8s.io/clusterqueues, localqueues, cohorts: get, list, patch, delete"
     - "kueue.x-k8s.io/workloads, resourceflavors: list"
-    - "infrastructure.opendatahub.io/hardwareprofiles: get, list, patch, delete"
+    - "infrastructure.opendatahub.io/hardwareprofiles: get, list, create, patch, delete"
     - "core/nodes: list"
     - "core/namespaces: get"
   cluster_roles: true
