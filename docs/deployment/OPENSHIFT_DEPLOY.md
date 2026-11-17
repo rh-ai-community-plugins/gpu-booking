@@ -4,11 +4,20 @@ This guide walks through deploying the GPU Booking plugin on an OpenShift cluste
 
 ## Prerequisites
 
+Tooling:
+
 - **Helm** — to install the plugin chart
 - **`oc` CLI** — logged in to the target OpenShift cluster
-- **Cluster access for the backend** — the backend's ServiceAccount needs cluster-scoped Kueue/HardwareProfile permissions (created automatically by the Helm chart)
-- **Kueue** — must be installed on the cluster for GPU quota reservations
 - **Access to `redhat-ods-applications`** — typically requires cluster-admin, since you need to modify the dashboard's Deployment
+
+Cluster components (the backend's ServiceAccount permissions are created automatically by the Helm chart):
+
+- **Red Hat OpenShift AI (or ODH)** — with the dashboard running
+- **Kueue** — must be installed on the cluster for GPU quota reservations (`kueue-operator`, channel `stable-v1.4`)
+- **GPU capacity** — GPU nodes with `nvidia.com/gpu` (and optional MIG) allocatable, via the NVIDIA GPU Operator + NFD
+- **User namespaces** — labeled `opendatahub.io/dashboard=true` and `kueue-managed=true`
+
+> **Full setup guide:** [Cluster Prerequisites](../setup/PREREQUISITES.md) walks through each component — Kueue installation, GPU node preparation, namespace labels — with a verification checklist. The plugin must be installed **last**.
 
 > **ODH vs RHOAI:** This guide uses the RHOAI dashboard namespace `redhat-ods-applications` and deployment name `rhods-dashboard`. If you are running the Open Data Hub (ODH) upstream distribution instead, substitute `opendatahub` for the namespace and `odh-dashboard` for the deployment name throughout.
 
@@ -38,6 +47,7 @@ This creates (in `cp-gpu-booking` by default):
 - A **Deployment** and **Service** (`gpu-booking`) serving the plugin's static assets (including `remoteEntry.js`) via Nginx on port 8080
 - A **Backend Deployment** and **Service** (`gpu-booking-bff`) running the Go API on port 3000
 - A **ServiceAccount**, **ClusterRole**, and **ClusterRoleBinding** (`gpu-booking-bff`) with the backend's cluster-scoped permissions (TokenReview/SubjectAccessReview create, Kueue management, HardwareProfiles, node listing)
+- **User/admin ClusterRoles** (`gpu-booking-user`, `gpu-booking-admin`) — bind them to your groups in [step 3](#3-grant-users-access)
 - A **PersistentVolumeClaim** (`gpu-booking-data`, 2Gi default) for the SQLite booking database
 - Optionally a **ConfigMap** with static GPU resource config (only when `gpuDiscovery.enabled=false`)
 
@@ -156,7 +166,27 @@ New dashboard pods roll out automatically after the environment variable is set.
 
 ---
 
-## 3. Verify
+## 3. Grant Users Access
+
+The Helm chart creates the backend's permissions, plus two ClusterRoles for **people**. Bind them to your OpenShift groups so the app knows who is an administrator (the backend checks the `admin` verb via a SubjectAccessReview):
+
+```bash
+# Admins: admin dashboard, system bookings, delete any booking
+oc create clusterrolebinding gpu-booking-admins \
+  --clusterrole=gpu-booking-admin \
+  --group=<your-admin-group>
+
+# Regular users
+oc create clusterrolebinding gpu-booking-users \
+  --clusterrole=gpu-booking-user \
+  --group=<your-user-group>
+```
+
+Without an `admin` binding, no one can open the Admin Dashboard. For optional extras (a read-only `kueue-cluster-visibility` role for users, and a ValidatingAdmissionPolicy that stops manual ClusterQueue edits), see [RBAC & Access Control](../setup/RBAC.md).
+
+---
+
+## 4. Verify
 
 ### Check registration
 

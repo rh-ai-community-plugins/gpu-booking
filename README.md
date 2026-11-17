@@ -39,7 +39,11 @@ helm install gpu-booking oci://quay.io/rh-ai-community-plugins/gpu-booking-chart
   --version 0.1.0 --namespace cp-gpu-booking --create-namespace
 ```
 
-Then register the plugin with the RHOAI Dashboard via `MODULE_FEDERATION_CONFIG` — full steps in [docs/deployment/OPENSHIFT_DEPLOY.md](docs/deployment/OPENSHIFT_DEPLOY.md).
+Then register the plugin with the RHOAI Dashboard via `MODULE_FEDERATION_CONFIG` and grant users access — full steps in [docs/deployment/OPENSHIFT_DEPLOY.md](docs/deployment/OPENSHIFT_DEPLOY.md).
+
+The cluster needs OpenShift AI, Kueue and GPU capacity first — see
+[docs/setup/PREREQUISITES.md](docs/setup/PREREQUISITES.md), and
+[docs/setup/](docs/README.md) for the full documentation index (Kueue quota model, RBAC).
 
 ## Support
 

@@ -137,3 +137,4 @@ Administrators can create **system bookings** -- reservations for a namespace th
 
 - [Getting Started](getting-started) -- back to basics
 - [GPU Resources](gpu-resources) -- resource type details
+- [Cluster Prerequisites](cluster-prerequisites) / [RBAC & Access Control](rbac) -- for cluster administrators
