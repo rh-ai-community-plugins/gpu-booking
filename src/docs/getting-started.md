@@ -71,3 +71,7 @@ Below the header you will find:
 - [Calendar & Navigation](calendar) -- learn how to navigate dates and months
 - [Making Bookings](making-bookings) -- reserve your first GPU slot
 - [GPU Resources](gpu-resources) -- understand the different GPU types available
+
+<div class="alert alert-info">
+  <strong>Cluster administrator?</strong> See <a href="cluster-prerequisites">Cluster Prerequisites</a>, <a href="kueue-quota-model">Kueue &amp; Quota Model</a> and <a href="rbac">RBAC &amp; Access Control</a> under Cluster Setup in the sidebar.
+</div>

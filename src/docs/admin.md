@@ -135,3 +135,11 @@ This is useful for maintenance windows or debugging without needing to redeploy.
 ## Auto-Refresh
 
 The admin dashboard automatically refreshes every 30 seconds to show the latest bookings and sync state. You can also click **Refresh** at any time.
+
+---
+
+## Next Steps
+
+- [RBAC & Access Control](rbac) -- how admins are determined and how to grant access
+- [Kueue & Quota Model](kueue-quota-model) -- what the reservation sync creates
+- [Cluster Prerequisites](cluster-prerequisites) -- what must exist before install

@@ -137,4 +137,5 @@ A preempted workload is re-queued by Kueue and will resume when resources become
 
 - [Making Bookings](making-bookings) -- how to override consumed bookings
 - [Slot Types & Conflicts](slots-and-conflicts) -- booking conflict rules
+- [Kueue & Quota Model](kueue-quota-model) -- the cluster-side model behind auto-bookings (admins)
 - [FAQ](faq) -- common questions
